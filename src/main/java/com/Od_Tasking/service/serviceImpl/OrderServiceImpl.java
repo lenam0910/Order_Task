@@ -3,6 +3,7 @@ package com.Od_Tasking.service.serviceImpl;
 
 import com.Od_Tasking.entity.Orders.*;
 //import com.Od_Tasking.entity.Orders.Properties;
+import com.Od_Tasking.entity.User;
 import com.Od_Tasking.repository.OrderRepository;
 import com.Od_Tasking.repository.UserRepository;
 import com.Od_Tasking.service.OrderService;
@@ -10,12 +11,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.thoughtworks.qdox.model.expression.Or;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
     private final RestTemplate restTemplate;
     private final OrderRepository orderRepository;
@@ -115,6 +120,42 @@ public class OrderServiceImpl implements OrderService {
         return "Đơn hàng đã đang được xử lý";
 
     }
+
+    @Override
+    public List<Order> getOrderOfUser(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            log.warn("Invalid id: {}", id);
+            return Collections.emptyList();
+        }
+        User user = userRepository.findById(id).orElse(null); // Tìm theo _id
+        if (user == null) {
+            log.warn("User not found for id: {}", id);
+            return Collections.emptyList();
+        }
+        log.warn("User name for id: {}", user.getUserName());
+
+        List<Order> lst = orderRepository.findAll();
+        List<Order> lstOrder = new ArrayList<>();
+        for (Order order: lst) {
+            if(order.getCreatedBy().equalsIgnoreCase(user.getUserName())){
+                lstOrder.add(order);
+            }
+        }
+        log.info("Found {} orders for id: {}", lstOrder.size(), id);
+        return lst.isEmpty() ? Collections.emptyList() : lst;
+    }
+
+//    @Override
+//    public List<Order> getOrderOfUser(Long id) {
+//        Optional<User> user = userRepository.findById(id+"");
+//        var lst = orderRepository.findAll().stream().filter(e -> e.getCreatedBy()
+//                .equalsIgnoreCase(user.get().getUserName()))
+//                .toList();
+//        if(CollectionUtils.isEmpty(lst)){
+//            return null;
+//        }
+//        return lst;
+//    }
 
 //    @Override
 //    public String getCookie() {

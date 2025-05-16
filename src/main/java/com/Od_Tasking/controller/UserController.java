@@ -3,6 +3,7 @@ package com.Od_Tasking.controller;
 
 import com.Od_Tasking.dto.Request.UserRequest;
 import com.Od_Tasking.dto.Respone.ApiRespone;
+import com.Od_Tasking.service.OrderService;
 import com.Od_Tasking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final OrderService orderService;
 
     @PostMapping
     ApiRespone<Object> createrUser(@RequestBody UserRequest userRequest){
@@ -44,6 +46,15 @@ public class UserController {
                 .code(1000)
                 .message("Get User by id")
                 .result(userService.searchUser(id))
+                .build();
+    }
+
+
+    @GetMapping("/orders/{id}")
+    ApiRespone<Object>  getAllOrderOfUser(@PathVariable String id){
+        return ApiRespone.builder().code(1000)
+                .message("Đã lấy ra các Order")
+                .result(orderService.getOrderOfUser(id))
                 .build();
     }
 

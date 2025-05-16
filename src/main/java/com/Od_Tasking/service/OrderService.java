@@ -12,5 +12,6 @@ public interface OrderService {
     String saveOrder(Long id) throws IOException, InterruptedException;
     List<Order> getAllOrder();
     String processOrder(Long id);
+    List<Order> getOrderOfUser(String id);
 //    String getCookie();
 }
