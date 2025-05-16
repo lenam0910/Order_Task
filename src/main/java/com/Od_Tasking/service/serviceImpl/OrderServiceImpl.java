@@ -137,7 +137,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> lst = orderRepository.findAll();
         List<Order> lstOrder = new ArrayList<>();
         for (Order order: lst) {
-            if(order.getCreatedBy().equalsIgnoreCase(user.getUserName())){
+            if(order.getUpdatedBy().equalsIgnoreCase(user.getUserName())){
                 lstOrder.add(order);
             }
         }
