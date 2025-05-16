@@ -134,14 +134,9 @@ public class OrderServiceImpl implements OrderService {
         }
         log.warn("User name for id: {}", user.getUserName());
 
-        List<Order> lst = orderRepository.findAll();
-        List<Order> lstOrder = new ArrayList<>();
-        for (Order order: lst) {
-            if(order.getUpdatedBy().equalsIgnoreCase(user.getUserName())){
-                lstOrder.add(order);
-            }
-        }
-        log.info("Found {} orders for id: {}", lstOrder.size(), id);
+        List<Order> lst = orderRepository.findAll().stream().filter(x -> x.getUpdatedBy().equalsIgnoreCase(user.getUserName())).toList();
+
+        log.info("Found {} orders for id: {}", lst.size(), id);
         return lst.isEmpty() ? Collections.emptyList() : lst;
     }
 
