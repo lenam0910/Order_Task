@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Od_Tasking
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/demo
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+jwt:
+  SECRET_KEY: ZklN7dQKtUB/eJHNKevcGXKr9GEh/CYGec9i0ZfkmQFeWUD0npk60wxnhMjS9xxu
