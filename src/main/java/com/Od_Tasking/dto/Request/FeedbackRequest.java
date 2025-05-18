@@ -14,5 +14,6 @@ public class FeedbackRequest {
     String orderId;
     String feedbackText;
     int rating;
+    String image;
 
 }

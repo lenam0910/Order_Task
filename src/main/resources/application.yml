@@ -1,7 +1,9 @@
 spring:
   application:
     name: Od_Tasking
-
+  servlet:
+    multipart:
+      enabled: true
   data:
     mongodb:
       uri: mongodb://localhost:27017/demo
@@ -10,3 +12,7 @@ spring:
 
 jwt:
   SECRET_KEY: ZklN7dQKtUB/eJHNKevcGXKr9GEh/CYGec9i0ZfkmQFeWUD0npk60wxnhMjS9xxu
+
+
+file:
+  upload-dir: /src/main/resources/image

@@ -12,6 +12,7 @@ public class FeedbackRespone {
     private String orderId;
     private String feedbackText;
     private int rating;
+    private String image;
     private String createdAt;
     private String userName;
 }

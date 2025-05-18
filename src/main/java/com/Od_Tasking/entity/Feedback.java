@@ -38,6 +38,8 @@ public class Feedback {
     @Field("rating")
     int rating;
 
+    @Field("images")
+    String image;
 
     @Field("is_deleted")
     boolean isDeleted = false;
