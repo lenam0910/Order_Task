@@ -155,17 +155,17 @@ public class OrderServiceImpl implements OrderService {
             username = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
         }
         Optional<Order> orderProcess = orderRepository.findById(id + "");
-        log.info("Image id is {}", imageMapper.toImage(imageRequest).getId());
         log.info("Image url is {}", imageMapper.toImage(imageRequest).getImgUrl());
 
         Image imageOrder = imageService.saveImageForOrder(imageMapper.toImage(imageRequest), id + "");
         if (orderProcess.isPresent() && orderProcess.get().getStatus().size() != 0 &&
-                !orderProcess.get().getStatus().get(orderProcess.get().getStatus().size() - 1).getStatus().equals("Đã tạo đơn hàng thành công")) {
+                !orderProcess.get().getStatus().get(orderProcess.get().getStatus().size() - 1).getStatus().equals("Đã xác nhận đơn hàng")) {
             orderProcess.get().getStatus().add(Status.builder()
                     .updateBy(username)
                     .status("Đã xác nhận đơn hàng")
                     .createdAt(LocalDateTime.now())
                     .build());
+            log.info("url {}", imageOrder.getImgUrl());
             orderProcess.get().setImageUrl(imageOrder.getImgUrl());
 
             orderProcess.get().setCurrentStatus(orderProcess.get().getStatus()

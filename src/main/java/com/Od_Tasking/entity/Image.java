@@ -40,4 +40,6 @@ public class Image {
     @Field("user_name")
     String userName;
 
+    @Field("is_downloaded")
+    boolean isDownloaded = false;
 }

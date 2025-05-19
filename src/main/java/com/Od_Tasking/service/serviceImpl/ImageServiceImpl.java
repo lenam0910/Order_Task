@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -73,10 +74,6 @@ public class ImageServiceImpl implements ImageService {
         return null;
     }
 
-    @Override
-    public ImageResponse getAllImages()  {
-        return null;
-    }
 
     @Override
     public Image saveImageForOrder(Image image, String orderId) {
@@ -86,24 +83,29 @@ public class ImageServiceImpl implements ImageService {
             Object principal = authentication.getPrincipal();
             username = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
         }
-
+        image.setOrderId(orderId);
+        image.setUserName(username);
+        image.setImgUrl(image.getImgUrl());
+        image.setCount(image.getCount() + 1);
+        image.setDownloaded(true);
         Image imageOrder = imageRepository.save(image);
-        imageOrder.setOrderId(orderId);
-        imageOrder.setUserName(username);
-        imageOrder.setImgUrl(image.getImgUrl());
-        imageOrder.setCount(imageOrder.getCount() + 1);
 
         return imageOrder;
     }
 
     @Override
+    public List<Image> getAllImageByUserName(String usernName) {
+        var lstImage = imageRepository.findAll().stream().filter(x -> x.getUserName().equalsIgnoreCase(usernName) && x.isDownloaded() == true).toList();
+        return lstImage;
+    }
+
+    @Override
     public ImageResponse downloadImage(String id) {
         Image imgDownload = imageRepository.findById(id).orElseThrow(() -> new RuntimeException("Image not found"));
-        log.info("Image count: {}", imgDownload.getCount());
+        imgDownload.setDownloaded(true);
         imgDownload.setCount(imgDownload.getCount() + 1);
         downloadImage(imgDownload.getImgUrl(), "C:\\Users\\ADMIN\\Downloads\\order_" + id + ".jpg");
         imageRepository.save(imgDownload);
-        log.info("Image count: {}", imgDownload.getCount());
         return imageMapper.toResponse(imgDownload);
     }
 

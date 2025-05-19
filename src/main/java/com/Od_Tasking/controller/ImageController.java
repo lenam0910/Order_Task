@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +30,15 @@ public class ImageController {
                     .code(1000)
                     .message("Download image success")
                     .result(imageService.downloadImage(id))
+                    .build();
+        }
+
+        @GetMapping("/{userName}")
+        public ApiRespone<Object> getAllImageByUserName(@PathVariable String userName) {
+            return ApiRespone.builder()
+                    .code(1000)
+                    .message("Get all image by user name success")
+                    .result(imageService.getAllImageByUserName(userName))
                     .build();
         }
 
