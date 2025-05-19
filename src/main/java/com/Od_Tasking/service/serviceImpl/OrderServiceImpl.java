@@ -157,9 +157,9 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> orderProcess = orderRepository.findById(id + "");
         log.info("Image url is {}", imageMapper.toImage(imageRequest).getImgUrl());
 
-        Image imageOrder = imageService.saveImageForOrder(imageMapper.toImage(imageRequest), id + "");
         if (orderProcess.isPresent() && orderProcess.get().getStatus().size() != 0 &&
                 !orderProcess.get().getStatus().get(orderProcess.get().getStatus().size() - 1).getStatus().equals("Đã xác nhận đơn hàng")) {
+            Image imageOrder = imageService.saveImageForOrder(imageMapper.toImage(imageRequest), id + "");
             orderProcess.get().getStatus().add(Status.builder()
                     .updateBy(username)
                     .status("Đã xác nhận đơn hàng")
