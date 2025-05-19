@@ -9,6 +9,9 @@ import com.Od_Tasking.repository.FeedbackRepository;
 import com.Od_Tasking.service.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,18 +30,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     private String uploadDir;
 
     @Override
-    public FeedbackRespone createFeedback(FeedbackRequest feedbackRequest, MultipartFile image) {
+    public FeedbackRespone createFeedback(FeedbackRequest feedbackRequest) {
         Feedback feedback = feedbackMapper.toFeedback(feedbackRequest);
-
-        // Xử lý ảnh nếu có
-        if (image != null && !image.isEmpty()) {
-            try {
-                String imagePath = saveImage(image);
-                feedback.setImage(imagePath);
-            } catch (IOException e) {
-                throw new RuntimeException("Lỗi khi lưu ảnh");
-            }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = "anonymous";
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            username = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
         }
+        feedback.setUserName(username);
+        feedback.setOrderId("1");
 
         feedbackRepository.save(feedback);
         return feedbackMapper.toRespone(feedback);
@@ -46,16 +47,16 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 
 
-    private String saveImage(MultipartFile image) throws IOException {
-        File dir = new File(uploadDir);
-        if (!dir.exists()) {
-            dir.mkdirs(); // Tạo thư mục nếu chưa có
-        }
-        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-        File dest = new File(dir, fileName);
-        image.transferTo(dest);
-        return "/image/" + fileName; // Đường dẫn tương đối để truy cập
-    }
+//    private String saveImage(MultipartFile image) throws IOException {
+//        File dir = new File(uploadDir);
+//        if (!dir.exists()) {
+//            dir.mkdirs(); // Tạo thư mục nếu chưa có
+//        }
+//        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+//        File dest = new File(dir, fileName);
+//        image.transferTo(dest);
+//        return "/image/" + fileName; // Đường dẫn tương đối để truy cập
+//    }
 
     @Override
     public void deleteFeedback(String feedbackId) {

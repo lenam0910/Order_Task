@@ -52,7 +52,14 @@ public class Order {
     @JsonProperty("statuses")
     private List<Status> status = new ArrayList<>();
 
+    @Field("currentStatus")
+    private Status currentStatus;
+
     @Field("is_deleted")
     private boolean isDeleted = false;
+
+    @Field("image_url")
+    private String imageUrl;
+
 }
 

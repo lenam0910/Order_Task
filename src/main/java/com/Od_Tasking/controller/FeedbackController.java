@@ -8,25 +8,25 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.AccessType;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/feedback")
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class FeedbackController {
     FeedbackService feedbackService;
 
 
-    @PostMapping(value = "/submit-feedback", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/submit-feedback", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ApiRespone<Object> submitFeedback(
-            @RequestBody FeedbackRequest feedbackRequest,
-            @RequestPart(value = "image", required = false) MultipartFile image) {
+            @RequestBody FeedbackRequest feedbackRequest) {
         return ApiRespone.builder()
                 .code(1000)
                 .message("Feedback submitted successfully")
-                .result(feedbackService.createFeedback(feedbackRequest, image))
+                .result(feedbackService.createFeedback(feedbackRequest))
                 .build();
     }
 }

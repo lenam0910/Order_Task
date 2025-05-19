@@ -15,4 +15,4 @@ jwt:
 
 
 file:
-  upload-dir: /src/main/resources/image
+  upload-dir: /src/main/resources/static/img

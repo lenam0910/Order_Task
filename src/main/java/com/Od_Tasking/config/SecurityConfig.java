@@ -28,6 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(request -> request
+                .requestMatchers("/img/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "api/v1/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "api/v1/auth/login-cookie").permitAll()
