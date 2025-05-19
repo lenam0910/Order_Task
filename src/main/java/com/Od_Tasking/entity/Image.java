@@ -34,6 +34,9 @@ public class Image {
     @Field("order_id")
     String orderId;
 
+    @Field("count_image_download")
+    int count;
+
     @Field("user_name")
     String userName;
 

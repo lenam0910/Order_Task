@@ -21,5 +21,7 @@ public class ImageResponse {
 
     String orderId;
 
+    int count;
+
     String userName;
 }

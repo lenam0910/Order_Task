@@ -145,6 +145,7 @@ public class OrderServiceImpl implements OrderService {
         return "Đơn hàng đã đang được xử lý";
 
     }
+
     @Override
     public String confirmOrder(Long id, ImageRequest imageRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -158,7 +159,8 @@ public class OrderServiceImpl implements OrderService {
         log.info("Image url is {}", imageMapper.toImage(imageRequest).getImgUrl());
 
         Image imageOrder = imageService.saveImageForOrder(imageMapper.toImage(imageRequest), id + "");
-        if (orderProcess.isPresent() && orderProcess.get().getStatus().size() != 0) {
+        if (orderProcess.isPresent() && orderProcess.get().getStatus().size() != 0 &&
+                !orderProcess.get().getStatus().get(orderProcess.get().getStatus().size() - 1).getStatus().equals("Đã tạo đơn hàng thành công")) {
             orderProcess.get().getStatus().add(Status.builder()
                     .updateBy(username)
                     .status("Đã xác nhận đơn hàng")
@@ -248,6 +250,8 @@ public class OrderServiceImpl implements OrderService {
         log.info("Found {} orders for id: {}", lst.size(), id);
         return lst.isEmpty() ? Collections.emptyList() : lst;
     }
+
+
 
 //    @Override
 //    public List<Order> getOrderOfUser(Long id) {

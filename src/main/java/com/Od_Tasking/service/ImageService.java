@@ -14,4 +14,6 @@ public interface ImageService {
     ImageResponse updateImage(String id, ImageRequest imageRequest) ;
     ImageResponse getAllImages() ;
     Image saveImageForOrder(Image image, String orderId) ;
+
+    ImageResponse downloadImage(String id) ;
 }
