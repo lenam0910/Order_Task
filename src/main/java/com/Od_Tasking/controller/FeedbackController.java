@@ -25,15 +25,16 @@ public class FeedbackController {
     private static final Logger log = LoggerFactory.getLogger(FeedbackController.class);
     FeedbackService feedbackService;
 
-    @PostMapping(value = "/submit-feedback", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping( consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiRespone<Object> submitFeedback(
             @RequestPart("feedback") FeedbackRequest feedbackRequest,
             @RequestPart(value = "image", required = false) MultipartFile image) throws IOException, IOException {
-        log.info("Received feedback: {}, image: {}", feedbackRequest, image != null ? image.getOriginalFilename() : "null");
         return ApiRespone.builder()
                 .code(1000)
                 .message("Feedback submitted successfully")
                 .result(feedbackService.createFeedback(feedbackRequest, image))
                 .build();
     }
+
+
 }
