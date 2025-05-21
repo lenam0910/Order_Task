@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "api/v1/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "api/v1/auth/login-cookie").permitAll()
+                .requestMatchers("/api/v1/feedback/**").permitAll()
                 .anyRequest().authenticated()
         );
 //        http.httpBasic(Customizer.withDefaults());

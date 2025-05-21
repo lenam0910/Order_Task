@@ -9,10 +9,11 @@ import lombok.Data;
 public class FeedbackRespone {
 
     private String id;
-    private String orderId;
     private String feedbackText;
     private int rating;
     private String image;
     private String createdAt;
     private String userName;
+    String imgFeedback;
+
 }

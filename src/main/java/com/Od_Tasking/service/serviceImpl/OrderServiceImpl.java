@@ -202,35 +202,6 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-//    @Override
-//    public String confirmOrder(Long id, ImageRequest imageRequest) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = "anonymous";
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            Object principal = authentication.getPrincipal();
-//            username = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
-//        }
-//        Optional<Order> orderProcess = orderRepository.findById(id + "");
-//        Image imageOrder = imageService.saveImageForOrder(imageMapper.toImage(imageRequest), id + "");
-//        if (orderProcess.isPresent() && orderProcess.get().getStatus().size() != 0) {
-//
-//            orderProcess.get().getStatus().add(Status.builder()
-//                    .updateBy(username)
-//                    .status("Đã xác nhận đơn hàng")
-//                    .createdAt(LocalDateTime.now())
-//                    .build());
-//            orderProcess.get().setImageUrl(imageOrder.getImgUrl());
-//            orderProcess.get().setCurrentStatus(orderProcess.get().getStatus()
-//                    .stream()
-//                    .sorted(Comparator.comparing(Status::getCreatedAt).reversed())
-//                    .toList()
-//                    .get(0));
-//            orderRepository.save(orderProcess.get());
-//            return "Đã chuyển trạng thái đơn hàng sang đã xác nhận";
-//        }
-//        return "Đơn hàng đã được xác nhận";
-//
-//    }
 
     @Override
     public List<Order> getOrderOfUser(String id) {

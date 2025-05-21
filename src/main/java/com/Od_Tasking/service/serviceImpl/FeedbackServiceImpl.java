@@ -17,7 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +33,32 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+
+    private String saveImage(MultipartFile image) throws IOException {
+        // Tạo thư mục upload nếu chưa tồn tại
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        // Tạo tên file duy nhất
+        String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+        Path filePath = uploadPath.resolve(fileName);
+
+        // Lưu file vào thư mục
+        Files.copy(image.getInputStream(), filePath);
+
+        // Trả về đường dẫn tương đối
+        return uploadDir + "/" + fileName;
+    }
+
+
     @Override
-    public FeedbackRespone createFeedback(FeedbackRequest feedbackRequest) {
+    public FeedbackRespone createFeedback(FeedbackRequest feedbackRequest, MultipartFile image) throws IOException {
+// Map DTO sang entity
         Feedback feedback = feedbackMapper.toFeedback(feedbackRequest);
+
+        // Lấy thông tin người dùng từ SecurityContext
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = "anonymous";
         if (authentication != null && authentication.isAuthenticated()) {
@@ -39,24 +66,19 @@ public class FeedbackServiceImpl implements FeedbackService {
             username = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
         }
         feedback.setUserName(username);
-        feedback.setOrderId("1");
 
+        // Xử lý upload ảnh nếu có
+        if (image != null && !image.isEmpty()) {
+            String imagePath = saveImage(image);
+            feedback.setImgFeedback(imagePath); // Lưu đường dẫn ảnh vào entity
+        }
+
+        // Lưu feedback vào database
         feedbackRepository.save(feedback);
+
+        // Map entity sang DTO trả về
         return feedbackMapper.toRespone(feedback);
     }
-
-
-
-//    private String saveImage(MultipartFile image) throws IOException {
-//        File dir = new File(uploadDir);
-//        if (!dir.exists()) {
-//            dir.mkdirs(); // Tạo thư mục nếu chưa có
-//        }
-//        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-//        File dest = new File(dir, fileName);
-//        image.transferTo(dest);
-//        return "/image/" + fileName; // Đường dẫn tương đối để truy cập
-//    }
 
     @Override
     public void deleteFeedback(String feedbackId) {

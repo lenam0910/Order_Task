@@ -49,6 +49,7 @@ public class AuthController {
 
         return ResponseEntity.ok("Đăng nhập thành công");
     }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("jwt", "")

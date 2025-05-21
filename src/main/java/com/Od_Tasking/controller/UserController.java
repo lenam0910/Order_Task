@@ -16,32 +16,33 @@ public class UserController {
     private final OrderService orderService;
 
     @PostMapping
-    ApiRespone<Object> createrUser(@RequestBody UserRequest userRequest){
-        return  ApiRespone.builder()
+    ApiRespone<Object> createrUser(@RequestBody UserRequest userRequest) {
+        return ApiRespone.builder()
                 .code(1000)
                 .message("Creted User")
                 .result(userService.createUser(userRequest))
                 .build();
     }
+
     @PutMapping("/{id}")
-    ApiRespone<Object> updateUser(@PathVariable String id, @RequestBody UserRequest userRequest){
+    ApiRespone<Object> updateUser(@PathVariable String id, @RequestBody UserRequest userRequest) {
         return ApiRespone.builder()
                 .code(1000)
                 .message("Updated User")
-                .result(userService.updateUser(id,userRequest))
+                .result(userService.updateUser(id, userRequest))
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    ApiRespone<Object> deleteUser(@PathVariable String id){
-        return  ApiRespone.builder()
+    ApiRespone<Object> deleteUser(@PathVariable String id) {
+        return ApiRespone.builder()
                 .code(1000)
                 .message("Deleted User")
                 .build();
     }
 
     @GetMapping("/{id}")
-    ApiRespone<Object> getUserById(@PathVariable String id){
+    ApiRespone<Object> getUserById(@PathVariable String id) {
         return ApiRespone.builder()
                 .code(1000)
                 .message("Get User by id")
@@ -51,7 +52,7 @@ public class UserController {
 
 
     @GetMapping("/orders/{id}")
-    ApiRespone<Object>  getAllOrderOfUser(@PathVariable String id){
+    ApiRespone<Object> getAllOrderOfUser(@PathVariable String id) {
         return ApiRespone.builder().code(1000)
                 .message("Đã lấy ra các Order")
                 .result(orderService.getOrderOfUser(id))
@@ -59,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping
-    ApiRespone<Object> getAllUser(){
+    ApiRespone<Object> getAllUser() {
         return ApiRespone.builder()
                 .code(1000)
                 .message("Get all User")

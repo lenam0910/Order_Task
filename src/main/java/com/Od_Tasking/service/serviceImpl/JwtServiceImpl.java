@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
     private String SECRET_KEY;
 
     @Override
-    public String generateToken(User user)  {
+    public String generateToken(User user) {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
@@ -34,7 +34,7 @@ public class JwtServiceImpl implements JwtService {
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
-        JWSObject jwsObject = new JWSObject(jwsHeader,payload);
+        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
         try {
             jwsObject.sign(new MACSigner(SECRET_KEY.getBytes()));
             return jwsObject.serialize();
@@ -49,10 +49,11 @@ public class JwtServiceImpl implements JwtService {
         JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
         SignedJWT signedJWT = SignedJWT.parse(token);
         Date date = signedJWT.getJWTClaimsSet().getExpirationTime();
-        boolean check= signedJWT.verify(verifier);
-        return (check&&date.after(new Date()));
+        boolean check = signedJWT.verify(verifier);
+        return (check && date.after(new Date()));
 
     }
+
     @Override
     public String getSubject(String token) {
         try {

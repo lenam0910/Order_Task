@@ -16,26 +16,28 @@ public class OrderController {
     private final OrderService orderService;
 
 
-
     @GetMapping("/{id}")
     public String getOrder(@PathVariable Long id) throws IOException, InterruptedException {
         return orderService.getOrderById(id);
     }
+
     @PostMapping("/save/{id}")
     public String saveOrder(@PathVariable Long id) throws IOException, InterruptedException {
         return orderService.saveOrder(id);
     }
+
     @PostMapping("/update/{id}")
     public String updateOrder(@PathVariable Long id) throws IOException, InterruptedException {
         return orderService.processOrder(id);
     }
+
     @PostMapping("/confirm/{id}")
-    public String confirmOrder(@PathVariable Long id,@RequestBody ImageRequest imageRequest) throws IOException, InterruptedException {
+    public String confirmOrder(@PathVariable Long id, @RequestBody ImageRequest imageRequest) throws IOException, InterruptedException {
         return orderService.confirmOrder(id, imageRequest);
     }
 
     @GetMapping()
-    public List<Order> getAllOrder(){
+    public List<Order> getAllOrder() {
         return orderService.getAllOrder();
     }
 //    @GetMapping("/cookie")

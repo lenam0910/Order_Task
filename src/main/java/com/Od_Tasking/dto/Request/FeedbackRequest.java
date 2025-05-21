@@ -11,9 +11,9 @@ import lombok.experimental.FieldDefaults;
 public class FeedbackRequest {
 
     String userId;
-    String orderId;
     String feedbackText;
     int rating;
+    String imgFeedback;
     String image;
 
 }

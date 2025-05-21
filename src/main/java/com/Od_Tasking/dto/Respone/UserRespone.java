@@ -22,6 +22,6 @@ public class UserRespone {
     private LocalDateTime updatedAt;
     private String createdBy;
     private String updatedBy;
-    private boolean isUpdated ;
-    private boolean isDeleted ;
+    private boolean isUpdated;
+    private boolean isDeleted;
 }

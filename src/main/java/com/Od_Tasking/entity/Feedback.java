@@ -29,8 +29,8 @@ public class Feedback {
     @Field("user_name")
     String userName;
 
-    @Field("order_id")
-    String orderId;
+    @Field("img_feedback")
+    String imgFeedback;
 
     @Field("feedback_text")
     String feedbackText;

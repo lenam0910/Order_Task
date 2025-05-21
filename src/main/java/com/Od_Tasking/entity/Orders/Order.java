@@ -35,7 +35,7 @@ public class Order {
 
     @LastModifiedDate
     @Field("created_at")
-    private LocalDateTime createdAt ;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Field("updated_at")
