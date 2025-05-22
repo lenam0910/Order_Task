@@ -10,8 +10,8 @@ public class FeedbackRespone {
 
     private String id;
     private String feedbackText;
-    private int rating;
-    private String image;
+    private String rating;
+    private String imageUrl;
     private String createdAt;
     private String userName;
     String imgFeedback;

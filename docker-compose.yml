@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=password
+    restart: unless-stopped
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+  minio-data:
+
+networks:
+  app-network:
+    driver: bridge

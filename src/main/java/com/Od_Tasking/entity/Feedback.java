@@ -36,10 +36,10 @@ public class Feedback {
     String feedbackText;
 
     @Field("rating")
-    int rating;
+    String rating;
 
     @Field("images")
-    String image;
+    String imageUrl;
 
     @Field("is_deleted")
     boolean isDeleted = false;

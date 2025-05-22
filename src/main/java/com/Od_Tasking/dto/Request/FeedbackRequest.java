@@ -12,8 +12,8 @@ public class FeedbackRequest {
 
     String userId;
     String feedbackText;
-    int rating;
+    String rating;
     String imgFeedback;
-    String image;
+    String imageUrl;
 
 }

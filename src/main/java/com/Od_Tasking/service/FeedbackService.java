@@ -5,12 +5,16 @@ import com.Od_Tasking.dto.Respone.FeedbackRespone;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public interface FeedbackService {
 
 
     FeedbackRespone createFeedback(FeedbackRequest feedbackRequest, MultipartFile image) throws IOException;
+    String sendFeedbackImg(MultipartFile image);
+
+    InputStream getFeedbackImg(String fileName);
 
     void deleteFeedback(String feedbackId);
     FeedbackRespone updateFeedback(String feedbackId, String feedbackText, int rating);
