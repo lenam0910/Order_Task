@@ -30,27 +30,37 @@ public class MinioConfig {
 
     @Bean
     public MinioClient minioClient() {
-        return MinioClient.builder()
-                .endpoint(url)
-                .credentials(accessKey, secretKey)
-                .build();
-    }
-
-    @PostConstruct
-    public void initBucket() {
         try {
             MinioClient client = MinioClient.builder()
                     .endpoint(url)
                     .credentials(accessKey, secretKey)
                     .build();
-            boolean bucketExists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-            if (!bucketExists) {
+            boolean exists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!exists) {
                 client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-                log.info("Bucket {} created successfully", bucketName);
             }
+            return client;
         } catch (Exception e) {
-            log.error("Failed to initialize bucket: {}", e.getMessage());
             throw new RuntimeException("MinIO initialization failed", e);
         }
     }
+
+
+//    @PostConstruct
+//    public void initBucket() {
+//        try {
+//            MinioClient client = MinioClient.builder()
+//                    .endpoint(url)
+//                    .credentials(accessKey, secretKey)
+//                    .build();
+//            boolean bucketExists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+//            if (!bucketExists) {
+//                client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+//                log.info("Bucket {} created successfully", bucketName);
+//            }
+//        } catch (Exception e) {
+//            log.error("Failed to initialize bucket: {}", e.getMessage());
+//            throw new RuntimeException("MinIO initialization failed", e);
+//        }
+//    }
 }
